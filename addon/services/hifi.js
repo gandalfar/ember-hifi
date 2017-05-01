@@ -216,11 +216,13 @@ export default Service.extend(Ember.Evented, DebugLogging, {
    * @returns {Promise.<Sound|error>} A sound that's ready to be played, or an error
    */
 
-  play(urlsOrPromise, options) {
+  play(urlsOrPromise, options = {}) {
     if (this.get('isPlaying')) {
       this.pause();
     }
     // update the UI immediately while `.load` figures out which sound is playable
+    let currentId = options.metadata && options.metadata.id ? options.metadata.id : urlsOrPromise;
+    this.set('currentId', currentId);
     this.set('isLoading', true);
 
     let load = this.load(urlsOrPromise, options);
