@@ -405,6 +405,7 @@ export default Service.extend(Ember.Evented, DebugLogging, {
     sound.on('audio-position-changed',     service,   service._relayPositionChangedEvent);
     sound.on('audio-loaded',               service,   service._relayLoadedEvent);
     sound.on('audio-loading',              service,   service._relayLoadingEvent);
+    sound.on('audio-blocked',              service,   service._relayBlockedEvent);
 
     sound.on('audio-position-will-change', service,   service._relayPositionWillChangeEvent);
     sound.on('audio-will-rewind',          service,   service._relayWillRewindEvent);
@@ -433,6 +434,7 @@ export default Service.extend(Ember.Evented, DebugLogging, {
     sound.off('audio-position-changed',     service,   service._relayPositionChangedEvent);
     sound.off('audio-loaded',               service,   service._relayLoadedEvent);
     sound.off('audio-loading',              service,   service._relayLoadingEvent);
+    sound.off('audio-blocked',              service,   service._relayBlockedEvent);
 
     sound.off('audio-position-will-change', service,   service._relayPositionWillChangeEvent);
     sound.off('audio-will-rewind',          service,   service._relayWillRewindEvent);
@@ -476,6 +478,9 @@ export default Service.extend(Ember.Evented, DebugLogging, {
   },
   _relayLoadingEvent(sound) {
     this._relayEvent('audio-loading', sound);
+  },
+  _relayBlockedEvent(sound) {
+    this._relayEvent('audio-blocked', sound);
   },
   _relayPositionWillChangeEvent(sound,  info = {}) {
     this._relayEvent('audio-position-will-change', sound, info);
@@ -745,6 +750,7 @@ export default Service.extend(Ember.Evented, DebugLogging, {
       Ember.$(document).on('touchstart', touchPlay);
 
       let blockCheck = Ember.run.later(() => {
+        this.trigger('audio-blocked', sound);
         this.debug(`Looks like the mobile browser blocked an autoplay trying to play sound with url: ${sound.get('url')}`);
       }, 2000);
 

@@ -162,6 +162,7 @@ The `hifi` service and the `sound` objects are extended with [Ember.Evented](htt
 - `audio-paused` (sound) - the sound was paused
 - `audio-ended` (sound) - the sound finished playing
 - `audio-load-error` (error) - loading sound failed
+- `audio-blocked` (sound) - the sound was prevented from playing on mobile browser
 - `audio-ready` (sound) - the sound is ready to play
 - `audio-will-rewind` (sound, {currentPosition, newPosition}) - fired before rewinding a sound
 - `audio-will-fast-forward` (sound, {currentPosition, newPosition}) - fired before fast-forwarding a sound
